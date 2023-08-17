@@ -177,10 +177,10 @@ void loop()
       Serial.print(currentPubIP);
       Serial.println();
 
-      // Save it in EEPROM
+      // Save it in Flash
       prefs.putString("publicIP", currentPubIP);
 
-      //TODO: Call out DDNS 
+      // Update DuckDNS
       String response = setDDNS(currentPubIP);
 
       if (response == "OK")
