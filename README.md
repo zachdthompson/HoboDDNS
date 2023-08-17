@@ -1,6 +1,12 @@
 # HoboDDNS
 An Arudiono DDNS client to allow for constant updating of your public IP to a DuckDNS domain.
 
+## Hardware
+This code is written with an ESP32 Devkit V1 in mind. You can get a million of them from AliExpress
+
+I also have printed a really nice case for all mine, check it out here:
+https://www.printables.com/model/50035-esp32-devkit-v1-chunky-case
+
 ## Setup
 1. Sign up and create a domain on http://www.duckdns.org/.
 - Be sure to keep track of your API Token, as well as the name of the domain you made.
