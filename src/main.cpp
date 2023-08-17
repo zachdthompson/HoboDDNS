@@ -19,7 +19,6 @@ const String domainName = "Your Duck DNS URL Here";
 const String fqdn = domainName + ".duckdns.org";
 const String duckDNSuri = "https://www.duckdns.org/update?domains=";
 
-
 // Discord web-hook
 const String webhook = "Optional, but put your discord webhook here if you want discord alerts";
 
@@ -61,7 +60,6 @@ String setDDNS(String ipAddress)
   {
     return response;
   }
-
 }
 
 // Calls out via API to get the current public address

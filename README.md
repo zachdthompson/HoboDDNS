@@ -1,5 +1,5 @@
 # HoboDDNS
-An Arudiono DDNS client to allow for constant updating of your public IP to a DuckDNS domain.
+An Arduino DDNS client to allow for constant updating of your public IP to a DuckDNS domain.
 
 ## Hardware
 This code is written with an ESP32 Devkit V1 in mind. You can get a million of them from AliExpress
