@@ -12,7 +12,7 @@ https://www.printables.com/model/50035-esp32-devkit-v1-chunky-case
 - Be sure to keep track of your API Token, as well as the name of the domain you made.
 2. Setup and install either Arduino Studio, or PlatformIO on VSCode
 - I use PlatformIO, so the setup will be focused on that.
-3. Create a PlatformIO project with an ESP32 dev board as the target DEVICE_NAME
+3. Create a PlatformIO project with an ESP32 dev board as the target
 4. Copy the code from src into the src PlatformIO created.
 5. Change the items in the Configuration section
 6. Upload and test!
