@@ -4,9 +4,11 @@
 #include <ArduinoJson.h>
 #include <Preferences.h>
 
-#define DEVICE_NAME // Your Device Name Here
+// Replace with your information
+#define DEVICE_NAME "DefaultName"
 #define WIFI_SSID "default"
 #define WIFI_PSK "default"
+
 WiFiClient client;
 
 // IPIFY API
@@ -21,6 +23,7 @@ const String duckDNSuri = "https://www.duckdns.org/update?domains=";
 
 // Discord web-hook
 const String webhook = "Optional, but put your discord webhook here if you want discord alerts";
+bool using_discord = true; //Change to false if not using discord
 
 Preferences prefs;
 
@@ -29,7 +32,7 @@ String publicIP;
 
 // PublicIP check timer, in millis
 const int public_interval = 10000;
-long unsigned int public_timer;
+long unsigned int public_timer = millis();
 
 // Keep track of failures in case you want to do something if things fail too much
 int failure_counter = 0;
@@ -88,6 +91,12 @@ String getPublicIP()
 // Takes a message and sends it to the Discord webhook provided
 void sendDiscordMessage(String message) 
 {
+
+  // Skip if not using discord webhooks.
+  if (!using_discord){
+    return;
+  }
+
   // Create JSON
   DynamicJsonDocument doc(JSON_OBJECT_SIZE(1024));
   doc["content"] = message;
@@ -143,32 +152,33 @@ void setup()
   String message = String(DEVICE_NAME) + " is now online";
   sendDiscordMessage(message);
 }
-
+ 
 void loop() 
 {
   // Check if its time to look at public IP
-  if (public_timer < millis())
+  if (public_timer - millis() >= public_interval)
   {
     Serial.println();
     Serial.println("Checking public IP...");
     String currentPubIP = getPublicIP();
 
-    // If the call fails, increment the counter and sleep for 10 seconds
+    // If the call fails, increment the counter and try again
     if (currentPubIP == "failure")
     {
       failure_counter++;
-      sleep(10);
 
-      if (failure_counter >= 100)
+      // After 15 minutes of failure, reboot
+      if (failure_counter >= 90)
       {
-        // Do something
         Serial.println("Something broke");
+        ESP.restart();
       }
     }
 
     // If the call is successful and the new IP does not match the old, change it
     else if (currentPubIP != publicIP)
     {
+      // Reset the failure counter as it didnt fail.
       failure_counter = 0;
 
       Serial.print("IP change detected! IP is now: ");
@@ -201,7 +211,8 @@ void loop()
     }
     Serial.println("Public IP is currently: " + publicIP);
     Serial.println("Resetting check timer...");
-    // Reset timer
-    public_timer = millis() + public_interval;
+    
+    // Reset timer to current millis
+    public_timer = millis();
   }
 }
